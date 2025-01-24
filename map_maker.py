@@ -80,9 +80,6 @@ else:
     print('Wrong format. Please try again.')
     quit()
 
-
-############## COPY AND PASTED FROM JUPYTER NOTEBOOK ################
-
 # Remote Access - Archive Data Read with pandas from Iowa State Archive,
 # note differences from METAR files
 
@@ -90,6 +87,8 @@ if sfc_tf == True:
 
     standard_obs_tf = input('Would you like the standard surface observation, or to use a specific parameter? For standard, type S, for a specific parameter, type O    >>>')
 
+    # For Standard Surface Maps
+    
     if standard_obs_tf == 'S' or standard_obs_tf =='s':
 
         dt = timedelta(minutes=30)
@@ -106,6 +105,8 @@ if sfc_tf == True:
         df = metar.parse_metar_file(StringIO('\n'.join(val for val in data.metar)),
                                     year=date.year, month=date.month)
 
+        # User selected units
+        
         user_temp_units = input('For Celcius or Fahrenheit, type C/F    >>>')
 
         if user_temp_units == 'C' or user_temp_units == 'c':
@@ -120,6 +121,8 @@ if sfc_tf == True:
         
         user_map_region = input('Input a viable code from https://unidata.github.io/MetPy/latest/api/areas.html to select where to plot your map.    >>>')
 
+        # Correctly Formats Surface Data
+        
         mslp_formatter = lambda v: format(v*10, '.0f')[-3:]
 
         # Plot desired data
@@ -149,10 +152,15 @@ if sfc_tf == True:
         pc = declarative.PanelContainer()
         pc.size = (10, 10)
         pc.panels = [panel]
+
+        # Note that this saves the file to your maps directory. 
+        #To save images to the same location you are in, remove "maps/" from the string.
         
         pc.show()
         pc.save(f'maps/{obslvl}_{user_map_region}_{date:%Y%m%d}_{date:%H}z.png', dpi=150, bbox_inches='tight')
-        
+
+    #For Non-Standard Surface Maps
+    
     elif standard_obs_tf == 'O' or standard_obs_tf == 'o':
     
         dt = timedelta(minutes=30)
@@ -169,8 +177,10 @@ if sfc_tf == True:
         df = metar.parse_metar_file(StringIO('\n'.join(val for val in data.metar)),
                                     year=date.year, month=date.month)
         
+        # Prints a long list of many different parameters that the user can choose from
         print(df.units)
-    
+
+        # And these need the user to correctly spell and type what they want
         user_map_parameter = input('Select one of the above to plot.    >>>')
     
         user_map_units = input('For the code to work, also type the units used with the parameter here.    >>>')
@@ -178,7 +188,9 @@ if sfc_tf == True:
         user_map_region = input('Input a viable code from https://unidata.github.io/MetPy/latest/api/areas.html to select where to plot your map.    >>>')
     
         user_map_title = input("Lastly, input your parameter for your map's title here. (Tip: This will be printed as <your_title> on <date> at <time> UTC)    >>>")
-    
+
+        #### Used only for Valpo students if above websites are down
+        
         # Local Access
         # data = f'/data/ldmdata/surface/sao/{date:%Y%m%d%H}_sao.wmo'
         # df = metar.parse_metar_file(data, year=date.year, month=date.month)
@@ -205,13 +217,12 @@ if sfc_tf == True:
         pc.panels = [panel]
     
         # Saves the map, but make sure the f string is sending them to the right location.
-    
+        
+        # Note that this saves the file to your maps directory. 
+        #To save images to the same location you are in, remove "maps/" from the string.
+        
         pc.show()
         pc.save(f'maps/{obslvl}_{user_map_region}_{user_map_parameter}_{date:%Y%m%d}_{date:%H}z.png', dpi=150, bbox_inches='tight')
-
-    
-
-########      COPY AND PASTED FROM CLIMO JUPYTER NOTEBOOK      ########
 
 if sfc_tf == False:
 
@@ -226,6 +237,7 @@ if sfc_tf == False:
 # This formatter takes a value 1576 -> 576
 # Good for 700-hPa, 850-hPa, and 925-hPa Observations
         height_format = lambda v: format(v, '.0f')[1:]
+# Formats 250mb correctly
     elif obslvl == 250:
         height_format = lambda v: format(v, '03.0f')[1:-1]
 
@@ -266,11 +278,15 @@ if sfc_tf == False:
     pc.size = (15, 12)
     pc.panels = [panel]
 
+    # Note that this saves the file to your maps directory. 
+    #To save images to the same location you are in, remove "maps/" from the string.
+    
     pc.save(f'maps/{obslvl}mb_observations_{date:%Y%m%d}_{date:%H}z.png', dpi=150, bbox_inches='tight')
     pc.show()
 
 print('Enjoy your map!')
-# Test Product Here:
 
+
+# For testing
 #date = datetime(year,month,day,hour,minute)
 #print(date)
