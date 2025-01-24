@@ -8,3 +8,9 @@ going back and changing every date, time, and level of the atmosphere.
 To make this work as intended, create a directory called "maps" in the same directory as this is stored in. 
 There are various printing scripts throughout the code, so if you change your directory name, you will also 
 need to change the printing scripts in accordance with that.
+
+# Future Ideas #
+
+I am hoping to add contours onto this code pretty soon, but right now I'm still learning about these languages.
+
+I am also hoping to add anamolies once I learn that as well.
